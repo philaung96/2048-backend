@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
 	if (req.body.admin === admin) {
-		User.create(req.body).then(() => {
+		User.create(req.body.user).then(() => {
 			User.find({}).then((allUsers) => {
 				res.json({
 					status: 200,
