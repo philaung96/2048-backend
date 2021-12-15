@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const User = require('./user');
 require('dotenv').config();
+const admin = process.env.ADMIN_KEY;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -26,19 +27,23 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-	User.create(req.body).then(() => {
-		User.find({}).then((allUsers) => {
-			res.json({
-				status: 200,
-				user: allUsers,
+	if (req.body.admin === admin) {
+		User.create(req.body).then(() => {
+			User.find({}).then((allUsers) => {
+				res.json({
+					status: 200,
+					user: allUsers,
+				});
 			});
 		});
-	});
+	} else
+		res.json({
+			status: 401,
+			msg: 'Unauthorized access',
+		});
 });
 
 app.set('port', process.env.PORT || 8080);
 app.listen(app.get('port'), () => {
 	console.log('we in');
 });
-
-// "mongodb+srv://user2048:password2048@cluster0.f016w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
