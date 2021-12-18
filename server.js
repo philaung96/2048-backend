@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 const corsOptions = {
-	origin: 'http://localhost:3000',
+	origin: 'https://philaung96.github.io/2048/',
 	credentials: true,
 	optionSuccessStatus: 200,
 };
